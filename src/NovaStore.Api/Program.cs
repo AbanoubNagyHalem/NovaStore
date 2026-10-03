@@ -28,5 +28,6 @@ app.UseHttpsRedirection();
 
 app.MapProductsEndpoints();
 app.MapCategoriesEndpoints();
+app.MapBrandsEndpoints();
 
 app.Run();
