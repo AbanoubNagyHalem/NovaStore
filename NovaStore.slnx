@@ -1,0 +1,8 @@
+<Solution>
+  <Folder Name="/src/">
+    <Project Path="src/NovaStore.Api/NovaStore.Api.csproj" />
+    <Project Path="src/NovaStore.Application/NovaStore.Application.csproj" />
+    <Project Path="src/NovaStore.Domain/NovaStore.Domain.csproj" />
+    <Project Path="src/NovaStore.Infrastructure/NovaStore.Infrastructure.csproj" />
+  </Folder>
+</Solution>
