@@ -7,6 +7,10 @@ public interface IProductRepository
   Task<IReadOnlyList<Product>> GetAllAsync(
       CancellationToken cancellationToken = default);
 
+  Task<Product?> GetByIdAsync(
+      Guid id,
+      CancellationToken cancellationToken = default);
+
   Task<bool> ExistsBySlugAsync(
       string slug,
       CancellationToken cancellationToken = default);

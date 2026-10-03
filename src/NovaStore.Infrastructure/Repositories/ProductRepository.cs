@@ -25,6 +25,19 @@ public sealed class ProductRepository : IProductRepository
         .ToListAsync(cancellationToken);
   }
 
+  public Task<Product?> GetByIdAsync(
+      Guid id,
+      CancellationToken cancellationToken = default)
+  {
+    return _dbContext.Products
+        .AsNoTracking()
+        .Include(product => product.Category)
+        .Include(product => product.Brand)
+        .FirstOrDefaultAsync(
+            product => product.Id == id,
+            cancellationToken);
+  }
+
   public Task<bool> ExistsBySlugAsync(
       string slug,
       CancellationToken cancellationToken = default)

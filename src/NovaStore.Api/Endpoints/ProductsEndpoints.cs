@@ -1,4 +1,5 @@
 using NovaStore.Application.Products.Commands.CreateProduct;
+using NovaStore.Application.Products.Queries.GetProductById;
 using NovaStore.Application.Products.Queries.GetProducts;
 
 namespace NovaStore.Api.Endpoints;
@@ -12,6 +13,7 @@ public static class ProductsEndpoints
         .WithTags("Products");
 
     group.MapGet("/", GetProductsAsync);
+    group.MapGet("/{id:guid}", GetProductByIdAsync);
     group.MapPost("/", CreateProductAsync);
 
     return endpoints;
@@ -24,6 +26,18 @@ public static class ProductsEndpoints
     var products = await query.ExecuteAsync(cancellationToken);
 
     return Results.Ok(products);
+  }
+
+  private static async Task<IResult> GetProductByIdAsync(
+      Guid id,
+      GetProductByIdQuery query,
+      CancellationToken cancellationToken)
+  {
+    var product = await query.ExecuteAsync(
+        id,
+        cancellationToken);
+
+    return Results.Ok(product);
   }
 
   private static async Task<IResult> CreateProductAsync(

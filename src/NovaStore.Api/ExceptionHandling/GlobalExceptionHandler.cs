@@ -33,7 +33,15 @@ public sealed class GlobalExceptionHandler : IExceptionHandler
 
         problemDetails.Extensions["errors"] =
             validationException.Errors;
+        break;
 
+      case NotFoundException:
+        problemDetails = new ProblemDetails
+        {
+          Status = StatusCodes.Status404NotFound,
+          Title = "Not Found",
+          Detail = exception.Message
+        };
         break;
 
       case ConflictException:
@@ -43,7 +51,6 @@ public sealed class GlobalExceptionHandler : IExceptionHandler
           Title = "Conflict",
           Detail = exception.Message
         };
-
         break;
 
       default:
@@ -57,7 +64,6 @@ public sealed class GlobalExceptionHandler : IExceptionHandler
         _logger.LogError(
             exception,
             "An unhandled exception occurred.");
-
         break;
     }
 
