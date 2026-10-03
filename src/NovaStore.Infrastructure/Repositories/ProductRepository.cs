@@ -38,6 +38,16 @@ public sealed class ProductRepository : IProductRepository
             cancellationToken);
   }
 
+  public Task<Product?> GetForUpdateAsync(
+      Guid id,
+      CancellationToken cancellationToken = default)
+  {
+    return _dbContext.Products
+        .FirstOrDefaultAsync(
+            product => product.Id == id,
+            cancellationToken);
+  }
+
   public Task<bool> ExistsBySlugAsync(
       string slug,
       CancellationToken cancellationToken = default)
@@ -48,6 +58,19 @@ public sealed class ProductRepository : IProductRepository
             cancellationToken);
   }
 
+  public Task<bool> ExistsBySlugExceptIdAsync(
+      string slug,
+      Guid excludedId,
+      CancellationToken cancellationToken = default)
+  {
+    return _dbContext.Products
+        .AnyAsync(
+            product =>
+                product.Slug == slug &&
+                product.Id != excludedId,
+            cancellationToken);
+  }
+
   public Task<bool> ExistsBySkuAsync(
       string sku,
       CancellationToken cancellationToken = default)
@@ -55,6 +78,19 @@ public sealed class ProductRepository : IProductRepository
     return _dbContext.Products
         .AnyAsync(
             product => product.Sku == sku,
+            cancellationToken);
+  }
+
+  public Task<bool> ExistsBySkuExceptIdAsync(
+      string sku,
+      Guid excludedId,
+      CancellationToken cancellationToken = default)
+  {
+    return _dbContext.Products
+        .AnyAsync(
+            product =>
+                product.Sku == sku &&
+                product.Id != excludedId,
             cancellationToken);
   }
 

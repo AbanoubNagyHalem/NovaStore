@@ -1,4 +1,5 @@
 using NovaStore.Application.Products.Commands.CreateProduct;
+using NovaStore.Application.Products.Commands.UpdateProduct;
 using NovaStore.Application.Products.Queries.GetProductById;
 using NovaStore.Application.Products.Queries.GetProducts;
 
@@ -15,6 +16,7 @@ public static class ProductsEndpoints
     group.MapGet("/", GetProductsAsync);
     group.MapGet("/{id:guid}", GetProductByIdAsync);
     group.MapPost("/", CreateProductAsync);
+    group.MapPut("/{id:guid}", UpdateProductAsync);
 
     return endpoints;
   }
@@ -52,5 +54,19 @@ public static class ProductsEndpoints
     return Results.Created(
         $"/api/products/{product.Id}",
         product);
+  }
+
+  private static async Task<IResult> UpdateProductAsync(
+      Guid id,
+      UpdateProductCommand command,
+      UpdateProductCommandHandler handler,
+      CancellationToken cancellationToken)
+  {
+    var product = await handler.HandleAsync(
+        id,
+        command,
+        cancellationToken);
+
+    return Results.Ok(product);
   }
 }

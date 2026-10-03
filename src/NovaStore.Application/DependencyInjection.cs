@@ -2,6 +2,7 @@ using Microsoft.Extensions.DependencyInjection;
 using NovaStore.Application.Brands.Commands.CreateBrand;
 using NovaStore.Application.Categories.Commands.CreateCategory;
 using NovaStore.Application.Products.Commands.CreateProduct;
+using NovaStore.Application.Products.Commands.UpdateProduct;
 using NovaStore.Application.Products.Queries.GetProductById;
 using NovaStore.Application.Products.Queries.GetProducts;
 
@@ -14,9 +15,11 @@ public static class DependencyInjection
   {
     services.AddScoped<GetProductsQuery>();
     services.AddScoped<GetProductByIdQuery>();
+
     services.AddScoped<CreateCategoryCommandHandler>();
     services.AddScoped<CreateBrandCommandHandler>();
     services.AddScoped<CreateProductCommandHandler>();
+    services.AddScoped<UpdateProductCommandHandler>();
 
     return services;
   }
