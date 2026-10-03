@@ -5,6 +5,7 @@ using NovaStore.Application.Products.Commands.CreateProduct;
 using NovaStore.Application.Products.Commands.UpdateProduct;
 using NovaStore.Application.Products.Queries.GetProductById;
 using NovaStore.Application.Products.Queries.GetProducts;
+using NovaStore.Application.Products.Commands.DeleteProduct;
 
 namespace NovaStore.Application;
 
@@ -20,6 +21,7 @@ public static class DependencyInjection
     services.AddScoped<CreateBrandCommandHandler>();
     services.AddScoped<CreateProductCommandHandler>();
     services.AddScoped<UpdateProductCommandHandler>();
+    services.AddScoped<DeleteProductCommandHandler>();
 
     return services;
   }

@@ -19,6 +19,7 @@ public sealed class ProductRepository : IProductRepository
   {
     return await _dbContext.Products
         .AsNoTracking()
+        .Where(product => product.IsActive)
         .Include(product => product.Category)
         .Include(product => product.Brand)
         .OrderBy(product => product.Name)
@@ -34,7 +35,9 @@ public sealed class ProductRepository : IProductRepository
         .Include(product => product.Category)
         .Include(product => product.Brand)
         .FirstOrDefaultAsync(
-            product => product.Id == id,
+            product =>
+                product.Id == id &&
+                product.IsActive,
             cancellationToken);
   }
 

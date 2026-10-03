@@ -2,6 +2,7 @@ using NovaStore.Application.Products.Commands.CreateProduct;
 using NovaStore.Application.Products.Commands.UpdateProduct;
 using NovaStore.Application.Products.Queries.GetProductById;
 using NovaStore.Application.Products.Queries.GetProducts;
+using NovaStore.Application.Products.Commands.DeleteProduct;
 
 namespace NovaStore.Api.Endpoints;
 
@@ -17,6 +18,7 @@ public static class ProductsEndpoints
     group.MapGet("/{id:guid}", GetProductByIdAsync);
     group.MapPost("/", CreateProductAsync);
     group.MapPut("/{id:guid}", UpdateProductAsync);
+    group.MapDelete("/{id:guid}", DeleteProductAsync);
 
     return endpoints;
   }
@@ -68,5 +70,17 @@ public static class ProductsEndpoints
         cancellationToken);
 
     return Results.Ok(product);
+  }
+
+  private static async Task<IResult> DeleteProductAsync(
+    Guid id,
+    DeleteProductCommandHandler handler,
+    CancellationToken cancellationToken)
+  {
+    await handler.HandleAsync(
+        id,
+        cancellationToken);
+
+    return Results.NoContent();
   }
 }
