@@ -14,6 +14,17 @@ public sealed class CategoryRepository : ICategoryRepository
     _dbContext = dbContext;
   }
 
+  public Task<Category?> GetByIdAsync(
+      Guid id,
+      CancellationToken cancellationToken = default)
+  {
+    return _dbContext.Categories
+        .AsNoTracking()
+        .FirstOrDefaultAsync(
+            category => category.Id == id,
+            cancellationToken);
+  }
+
   public Task<bool> ExistsBySlugAsync(
       string slug,
       CancellationToken cancellationToken = default)

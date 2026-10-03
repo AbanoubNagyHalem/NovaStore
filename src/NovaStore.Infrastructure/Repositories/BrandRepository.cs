@@ -14,6 +14,17 @@ public sealed class BrandRepository : IBrandRepository
     _dbContext = dbContext;
   }
 
+  public Task<Brand?> GetByIdAsync(
+      Guid id,
+      CancellationToken cancellationToken = default)
+  {
+    return _dbContext.Brands
+        .AsNoTracking()
+        .FirstOrDefaultAsync(
+            brand => brand.Id == id,
+            cancellationToken);
+  }
+
   public Task<bool> ExistsBySlugAsync(
       string slug,
       CancellationToken cancellationToken = default)

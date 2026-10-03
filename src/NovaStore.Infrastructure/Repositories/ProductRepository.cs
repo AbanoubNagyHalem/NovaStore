@@ -5,7 +5,7 @@ using NovaStore.Infrastructure.Persistence;
 
 namespace NovaStore.Infrastructure.Repositories;
 
-public class ProductRepository : IProductRepository
+public sealed class ProductRepository : IProductRepository
 {
   private readonly NovaStoreDbContext _dbContext;
 
@@ -23,5 +23,40 @@ public class ProductRepository : IProductRepository
         .Include(product => product.Brand)
         .OrderBy(product => product.Name)
         .ToListAsync(cancellationToken);
+  }
+
+  public Task<bool> ExistsBySlugAsync(
+      string slug,
+      CancellationToken cancellationToken = default)
+  {
+    return _dbContext.Products
+        .AnyAsync(
+            product => product.Slug == slug,
+            cancellationToken);
+  }
+
+  public Task<bool> ExistsBySkuAsync(
+      string sku,
+      CancellationToken cancellationToken = default)
+  {
+    return _dbContext.Products
+        .AnyAsync(
+            product => product.Sku == sku,
+            cancellationToken);
+  }
+
+  public async Task AddAsync(
+      Product product,
+      CancellationToken cancellationToken = default)
+  {
+    await _dbContext.Products.AddAsync(
+        product,
+        cancellationToken);
+  }
+
+  public async Task SaveChangesAsync(
+      CancellationToken cancellationToken = default)
+  {
+    await _dbContext.SaveChangesAsync(cancellationToken);
   }
 }

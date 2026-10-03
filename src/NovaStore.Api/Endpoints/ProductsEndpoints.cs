@@ -1,3 +1,4 @@
+using NovaStore.Application.Products.Commands.CreateProduct;
 using NovaStore.Application.Products.Queries.GetProducts;
 
 namespace NovaStore.Api.Endpoints;
@@ -11,6 +12,7 @@ public static class ProductsEndpoints
         .WithTags("Products");
 
     group.MapGet("/", GetProductsAsync);
+    group.MapPost("/", CreateProductAsync);
 
     return endpoints;
   }
@@ -22,5 +24,19 @@ public static class ProductsEndpoints
     var products = await query.ExecuteAsync(cancellationToken);
 
     return Results.Ok(products);
+  }
+
+  private static async Task<IResult> CreateProductAsync(
+      CreateProductCommand command,
+      CreateProductCommandHandler handler,
+      CancellationToken cancellationToken)
+  {
+    var product = await handler.HandleAsync(
+        command,
+        cancellationToken);
+
+    return Results.Created(
+        $"/api/products/{product.Id}",
+        product);
   }
 }
