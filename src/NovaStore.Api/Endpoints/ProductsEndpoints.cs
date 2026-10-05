@@ -24,10 +24,18 @@ public static class ProductsEndpoints
   }
 
   private static async Task<IResult> GetProductsAsync(
+      int? pageNumber,
+      int? pageSize,
       GetProductsQuery query,
       CancellationToken cancellationToken)
   {
-    var products = await query.ExecuteAsync(cancellationToken);
+    var parameters = new ProductQueryParameters(
+        pageNumber ?? 1,
+        pageSize ?? 20);
+
+    var products = await query.ExecuteAsync(
+        parameters,
+        cancellationToken);
 
     return Results.Ok(products);
   }
